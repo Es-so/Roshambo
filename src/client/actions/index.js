@@ -1,8 +1,4 @@
 import player from './player';
-// import computer from './computer';
-// import dashboard from './dashboard';
-// import load from './load';
+import computer from './computer';
 
-export default player;
-
-// export default { ...player, ...computer, dashboard, ...load };
+export default { ...player, ...computer };

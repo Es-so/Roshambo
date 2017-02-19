@@ -1,14 +1,19 @@
+import { loadComputerShape } from './computer';
+
 export const SHAPE_SELECTED = 'player/shapeSelected';
 
-const shapeSelected = move => ({
+const shapeSelected = (shape, color) => ({
   type: SHAPE_SELECTED,
-  icon: move,
+  shape,
+  color,
 });
 
-export const selectShape = move => (dispatch) => {
-  dispatch(shapeSelected(move));
+const selectShape = (shape, color) => (dispatch) => {
+  dispatch(shapeSelected(shape, color));
+  dispatch(loadComputerShape(shape));
 };
 
 export default {
   shapeSelected,
+  selectShape,
 };

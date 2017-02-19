@@ -1,18 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import shapes from '../../store/shapes';
-
-const Wrapper = styled.section`
-  padding: 0.1em;
-  width: 100%;
-  background: red;
-`;
-
-const Title = styled.h3`
-  font-size: 1.5em;
-  text-align: center;
-  color: white;
-`;
+import colors from '../../store/color';
+import Header from '../Header/playersHeader';
 
 const Shape = styled.i`
   text-align: center;
@@ -23,34 +13,50 @@ const Shape = styled.i`
 const Result = styled.div`
   text-align: center;
   font-size: 2.8em;
-  margin: 0.5em;
 `;
 
-const FinalShape = styled.div`
+const Wrapper = styled.div`
   text-align: center;
   font-size: 2.8em;
-  margin: 0.5em;
 `;
 
-const Header = () =>
-  <Wrapper>
-    <Title>HUMAN</Title>
-  </Wrapper>
-;
+const getRandomColor = () => colors[(Math.floor(Math.random() * 42) % colors.length)];
 
-const shape = (shapeFont, id) => <Shape key={id} className={`fa fa-${shapeFont} fa-5x`} />;
+const shape = (shapeFont, id, selectShape, color) => <Shape key={id} style={{ color }} onClick={() => selectShape(shapeFont, '')} className={`fa fa-${shapeFont} fa-5x`} />;
 
-const allShapes = [shape(shapes.rock, 1), shape(shapes.paper, 2), shape(shapes.scissors, 3)];
+const FinalShape = ({ color, shapeFont }) => <Shape style={{ color, cursor: 'initial', margin: '0px' }} className={`fa fa-${shapeFont} fa-5x`} />;
 
-const Shapes = () => <div>{allShapes}</div>;
+FinalShape.propTypes = {
+  color: React.PropTypes.string.isRequired,
+  shapeFont: React.PropTypes.string.isRequired,
+};
 
-const Player = ({ player, gameResult }) =>
-  <div>
-    <Header />
-    <Shapes />
+const allShapes = selectShape => [
+  shape(shapes.rock, 1, selectShape, getRandomColor()),
+  shape(shapes.paper, 2, selectShape, getRandomColor()),
+  shape(shapes.scissors, 3, selectShape, getRandomColor())];
+
+const Shapes = ({ selectShape }) => <div>{allShapes(selectShape)}</div>;
+
+Shapes.propTypes = {
+  selectShape: React.PropTypes.func.isRequired,
+};
+
+const Player = ({ player, gameResult, selectShape }) =>
+  <div style={{ flex: '1' }} >
+    <Header title="HUMAN" />
+    <Shapes selectShape={selectShape} />
     <Result>{gameResult}</Result>
-    <FinalShape>Choice</FinalShape>
+    <Wrapper>
+      <FinalShape color={getRandomColor()} shapeFont={player.shape} />
+    </Wrapper>
   </div>
 ;
+
+Player.propTypes = {
+  player: React.PropTypes.object.isRequired,
+  gameResult: React.PropTypes.string.isRequired,
+  selectShape: React.PropTypes.func.isRequired,
+};
 
 export default Player;

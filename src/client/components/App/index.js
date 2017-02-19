@@ -22,13 +22,14 @@ const Wrapper = styled.div`
 `;
 
 const Content = ({ state, actions }) => {
-  const { player, computer, dashBoard, isLoading } = state;
+  const { player, computer, dashBoard, currentLoad } = state;
   const { gameResult } = dashBoard;
+  const { selectShape } = actions;
   return (
     <Wrapper>
-      <Player player={player} gameResult={gameResult} />
+      <Player player={player} gameResult={gameResult} selectShape={selectShape} />
       <DashBoard dashBoard={dashBoard} />
-      <Computer computer={computer} />
+      <Computer computer={computer} currentLoad={currentLoad} />
     </Wrapper>
   );
 };
@@ -38,8 +39,8 @@ Content.propTypes = {
   actions: React.PropTypes.object.isRequired,
 };
 
-const App = ({ player, computer, dashBoard, isLoading, actions }) => {
-  const state = { player, computer, dashBoard, isLoading };
+const App = ({ player, computer, dashBoard, currentLoad, actions }) => {
+  const state = { player, computer, dashBoard, currentLoad };
   return (
     <div>
       <Header />
@@ -58,7 +59,7 @@ App.propTypes = {
   player: React.PropTypes.object.isRequired,
   computer: React.PropTypes.object.isRequired,
   dashBoard: React.PropTypes.object.isRequired,
-  isLoading: React.PropTypes.bool.isRequired,
+  currentLoad: React.PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
